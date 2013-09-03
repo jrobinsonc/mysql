@@ -3,8 +3,8 @@
 /**
  * DB_MySQL Class
  *
- * @author 		Jose Robinson <jr@joserobinson.com>
- * @link 		https://github.com/jrobinsonc/DB_MySQL
+ * @author 	Jose Robinson <jr@joserobinson.com>
+ * @link 	https://github.com/jrobinsonc/DB_MySQL
  * @copyright	Copyright (c) 2013
  * @license 	MIT License
  * @version 	0.1
@@ -69,12 +69,12 @@ class DB_MySQL extends MySQLi
 
 		if (FALSE === $this->real_query($sql))
 		{
-            $this->error('Error performing query ' . $sql . ' - Error message : ' . $this->error);
+			$this->error('Error performing query ' . $sql . ' - Error message : ' . $this->error);
 
-            return FALSE;
-        }
+			return FALSE;
+		}
 
-        return new DB_MySQL_Result($this);
+		return new DB_MySQL_Result($this);
 	}
 
 	public function insert($table_name, $rows)
@@ -194,12 +194,12 @@ class DB_MySQL extends MySQLi
 	private function __clone() {}
 
 	public function __destruct()
-    {
-    	if (FALSE === $this->connected)
-    		return;
+	{
+    		if (FALSE === $this->connected)
+    			return;
 
-    	$this->close();
-    }
+    		$this->close();
+	}
 }
 
 class DB_MySQL_Result extends MySQLi_Result implements Countable
@@ -209,8 +209,8 @@ class DB_MySQL_Result extends MySQLi_Result implements Countable
 	 *
 	 * @return int
 	 */
-    public function count()
-    {
-        return $this->num_rows;
-    }
+	public function count()
+	{
+		return $this->num_rows;
+	}
 }
