@@ -3,11 +3,11 @@
 /**
  * DB_MySQL Class
  *
- * @author 	Jose Robinson <jr@joserobinson.com>
- * @link 	https://github.com/jrobinsonc/DB_MySQL
- * @copyright	Copyright (c) 2013
- * @license 	MIT License
- * @version 	0.1
+ * @author JoseRobinson.com
+ * @link https://github.com/jrobinsonc/DB_MySQL
+ * @copyright Copyright (c) 2013
+ * @license MIT License
+ * @version 0.2
  **/
 class DB_MySQL extends MySQLi
 {
@@ -62,6 +62,12 @@ class DB_MySQL extends MySQLi
 				$this->last_error = $str;
 	}
 
+	/**
+	 * Performs a generic query
+	 *
+	 * @param string $sql
+	 * @return DB_MySQL_Result
+	 */
 	public function query($sql)
 	{
 		if (FALSE === $this->_connect())
@@ -77,18 +83,25 @@ class DB_MySQL extends MySQLi
 		return new DB_MySQL_Result($this);
 	}
 
-	public function insert($table_name, $rows)
+	/**
+	 * Performs a INSERT statement
+	 *
+	 * @param string $table_name
+	 * @param array $fields
+	 * @return int Returns the ID of the inserted row, or FALSE on error
+	 */
+	public function insert($table_name, $fields)
 	{
 		$sql = "INSERT INTO `$table_name`"
-		. ' (`' . implode('`,`', array_keys($rows)) . '`)'
+		. ' (`' . implode('`,`', array_keys($fields)) . '`)'
 		. ' VALUES ';
 
-		$fields = array();
+		$prepared_fields = array();
 
-		foreach ($rows as $field_name => $field_value)
-			$fields[] = $this->escape($field_value, TRUE);
+		foreach ($fields as $field_name => $field_value)
+			$prepared_fields[] = $this->escape($field_value, TRUE);
 
-		$sql .= '(' .implode(',', $fields) . ')';
+		$sql .= '(' .implode(',', $prepared_fields) . ')';
 
 
 		if (FALSE === $this->query($sql))
@@ -116,7 +129,7 @@ class DB_MySQL extends MySQLi
 			foreach ($where as $field_name => $field_value) 
 				$fields[] = "`{$field_name}` = " . $this->escape($field_value, TRUE);
 
-			$sql = implode(' AND ', $fields);
+			$where_sql = implode(' AND ', $fields);
 
 			$limit = NULL;
 		}
@@ -124,36 +137,46 @@ class DB_MySQL extends MySQLi
 		{
 			if (preg_match('#^-?[0-9]+$#', $where) === 1)
 			{
-				$sql = "`id` = {$where}";
+				$where_sql = "`id` = {$where}";
 
 				$limit = 1;
 			}
 			else
 			{
-				$sql = $where;
+				$where_sql = $where;
 
 				$limit = NULL;
 			}
 		}
 
 
-		return array($sql, $limit);
+		return array($where_sql, $limit);
 	}
 
-	public function update($table_name, $rows, $where, $limit = NULL)
+	/**
+	 * Performs an UPDATE statement
+	 *
+	 * @param string $table_name The name of the table
+	 * @param array $fields The fields to update
+	 * @param mixed $where Accepts array, string and integer
+	 * @param int $limit (Optional) The limit of rows to update
+	 * @return int Returns the number of affected rows, or FALSE on error
+	 */
+	public function update($table_name, $fields, $where, $limit = NULL)
 	{
 		$sql = "UPDATE `{$table_name}` SET ";
 
-		$fields = array();
+		$prepared_fields = array();
 
-		foreach ($rows as $field_name => $field_value)
-			$fields[] = "`$field_name` = " . $this->escape($field_value, TRUE);
+		foreach ($fields as $field_name => $field_value)
+			$prepared_fields[] = "`$field_name` = " . $this->escape($field_value, TRUE);
 
 		$sql .= implode(',', $fields);
 
-		list($sql_where, $_limit) = $this->parse_where($where);
+		list($_where, $_limit) = $this->parse_where($where);
+		$where = $_where;
 
-		$sql .= " WHERE {$sql_where}";
+		$sql .= " WHERE {$where}";
 
 		if (NULL === $limit && NULL !== $_limit)
 			$limit = $_limit;
@@ -168,13 +191,22 @@ class DB_MySQL extends MySQLi
 			return $this->affected_rows;
 	}
 
+	/**
+	 * Performs a DELETE statement
+	 *
+	 * @param string $table_name The name of the table
+	 * @param string $where The where
+	 * @param int $limit (Optional) The limit
+	 * @return int Returns the number of affected rows, or FALSE on error
+	 */
 	public function delete($table_name, $where, $limit = NULL)
 	{
 		$sql = "DELETE FROM `{$table_name}`";
 
-		list($sql_where, $_limit) = $this->parse_where($where);
+		list($_where, $_limit) = $this->parse_where($where);
+		$where = $_where;
 
-		$sql .= " WHERE {$sql_where}";
+		$sql .= " WHERE {$where}";
 
 		if (NULL === $limit && NULL !== $_limit)
 			$limit = $_limit;
@@ -191,14 +223,68 @@ class DB_MySQL extends MySQLi
 			return $this->affected_rows;
 	}
 
+	/**
+	 * Performs a SELECT statement
+	 *
+	 * @param string $table_name The name of the table
+	 * @param mixed $fields (Optional) The fields you want to obtain in the result. Accepts array or string
+	 * @param mixed $where (Optional) The where. Accepts array, string or intenger
+	 * @param string $order_by (Optional) The order by
+	 * @param int $limit (Optional) The limit
+	 * @return DB_MySQL_Result
+	 */
+	public function select($table_name, $fields = '*', $where = NULL, $order_by = NULL, $limit = NULL)
+	{
+		if (is_array($fields))
+		{
+			foreach ($fields as $key => $value)
+			{
+				$fields[$key] = "`{$value}`";
+			}
+
+			$fields = implode(',', $fields);
+		}
+
+		$sql = "SELECT {$fields} FROM `{$table_name}`";
+
+		if (!is_null($where))
+		{
+			list($_where, $_limit) = $this->parse_where($where);
+			$where = $_where;
+
+			if (NULL === $limit && NULL !== $_limit)
+				$limit = $_limit;
+
+			$sql .= " WHERE {$where}";
+		}
+
+		if (!is_null($order_by))
+		{
+			$sql .= " ORDER BY {$order_by}";
+		}
+
+		if (!is_null($limit))
+		{
+			$sql .= " LIMIT {$limit}";
+		}
+
+		return $this->query($sql);
+	}
+
+	/**
+	 * Prevent cloning
+	 */
 	private function __clone() {}
 
+	/**
+	 * Close the connection when instance is destructed
+	 */
 	public function __destruct()
 	{
-    		if (FALSE === $this->connected)
-    			return;
+		if (FALSE === $this->connected)
+			return;
 
-    		$this->close();
+		$this->close();
 	}
 }
 
