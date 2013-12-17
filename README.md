@@ -3,7 +3,7 @@
 MySQLi Wrapper for PHP.    
 https://github.com/jrobinsonc/DB_MySQL
 
-## How to use (incomplete)
+## How to use
 
 First, connect to a database:
 
