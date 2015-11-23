@@ -12,7 +12,7 @@
 class DB_MySQL extends MySQLi
 {
 	private $db_config = array();
-	private $connected = FALSE;
+	private $connected = false;
 	private $last_error = '';
 
 	public function __construct() 
@@ -21,13 +21,13 @@ class DB_MySQL extends MySQLi
 
 		// The application does not connect to MySQL unless necessary to make a query.
  		if (count($this->db_config) < 4)
- 			$this->error('Invalid number of connection parameters', TRUE);
+ 			$this->error('Invalid number of connection parameters', true);
 	}
 
 	private function _connect()
 	{
-		if (TRUE === $this->connected)
-			return TRUE;
+		if (true === $this->connected)
+			return true;
 
 		list($host, $user, $pass, $database) = $this->db_config;
 
@@ -35,28 +35,28 @@ class DB_MySQL extends MySQLi
 
 		if ($this->connect_error)
 		{
-			$this->error('Error connecting to MySQL: ' . $this->connect_errno . ' ' . $this->connect_error, TRUE);
+			$this->error('Error connecting to MySQL: ' . $this->connect_errno . ' ' . $this->connect_error, true);
 
-			return FALSE;
+			return false;
 		}
 
 		// It's necessary for real_escape_string.
-		if (FALSE === $this->set_charset('utf8'))
+		if (false === $this->set_charset('utf8'))
 		{
 			$this->error('Error loading character set utf8: ' . $this->error);
 
-			return FALSE;
+			return false;
 		}
 
-		return $this->connected = TRUE;
+		return $this->connected = true;
 	}
 
-	public function error($str = '', $fatal = FALSE)
+	public function error($str = '', $fatal = false)
 	{
 		if ('' === $str)
 			return $this->last_error;
 		else
-			if (TRUE === $fatal)
+			if (true === $fatal)
 				throw new Exception($str);
 			else
 				$this->last_error = $str;
@@ -70,14 +70,14 @@ class DB_MySQL extends MySQLi
 	 */
 	public function query($sql)
 	{
-		if (FALSE === $this->_connect())
-			return FALSE;
+		if (false === $this->_connect())
+			return false;
 
-		if (FALSE === $this->real_query($sql))
+		if (false === $this->real_query($sql))
 		{
 			$this->error('Error performing query ' . $sql . ' - Error message : ' . $this->error);
 
-			return FALSE;
+			return false;
 		}
 
 		return new DB_MySQL_Result($this);
@@ -88,7 +88,7 @@ class DB_MySQL extends MySQLi
 	 *
 	 * @param string $table_name
 	 * @param array $fields
-	 * @return int Returns the ID of the inserted row, or FALSE on error
+	 * @return int Returns the ID of the inserted row, or false on error
 	 */
 	public function insert($table_name, $fields)
 	{
@@ -99,25 +99,25 @@ class DB_MySQL extends MySQLi
 		$prepared_fields = array();
 
 		foreach ($fields as $field_name => $field_value)
-			$prepared_fields[] = $this->escape($field_value, TRUE);
+			$prepared_fields[] = $this->escape($field_value, true);
 
 		$sql .= '(' .implode(',', $prepared_fields) . ')';
 
 
-		if (FALSE === $this->query($sql))
-			return FALSE;
+		if (false === $this->query($sql))
+			return false;
 		else
 			return $this->insert_id;
 	}
 
-	public function escape($str, $quoted = FALSE)
+	public function escape($str, $quoted = false)
 	{
 		$this->_connect(); // It's necessary for real_escape_string.
 
 		$result = $this->real_escape_string($str);
 
 
-		return TRUE === $quoted && preg_match('#^-?[0-9\.]+$#', $str) !== 1? "'{$result}'" : $result;
+		return true === $quoted && preg_match('#^-?[0-9\.]+$#', $str) !== 1? "'{$result}'" : $result;
 	}
 
 	private function parse_where($where)
@@ -127,7 +127,7 @@ class DB_MySQL extends MySQLi
 			$fields = array();
 
 			foreach ($where as $field_name => $field_value) 
-				$fields[] = "`{$field_name}` = " . $this->escape($field_value, TRUE);
+				$fields[] = "`{$field_name}` = " . $this->escape($field_value, true);
 
 			$where_sql = implode(' AND ', $fields);
 
@@ -160,7 +160,7 @@ class DB_MySQL extends MySQLi
 	 * @param array $fields The fields to update
 	 * @param mixed $where Accepts array, string and integer
 	 * @param int $limit (Optional) The limit of rows to update
-	 * @return int Returns the number of affected rows, or FALSE on error
+	 * @return int Returns the number of affected rows, or false on error
 	 */
 	public function update($table_name, $fields, $where, $limit = NULL)
 	{
@@ -169,7 +169,7 @@ class DB_MySQL extends MySQLi
 		$prepared_fields = array();
 
 		foreach ($fields as $field_name => $field_value)
-			$prepared_fields[] = "`$field_name` = " . $this->escape($field_value, TRUE);
+			$prepared_fields[] = "`$field_name` = " . $this->escape($field_value, true);
 
 		$sql .= implode(',', $fields);
 
@@ -185,8 +185,8 @@ class DB_MySQL extends MySQLi
 			$sql .= " LIMIT {$limit}";
 
 
-		if (FALSE === $this->query($sql))
-			return FALSE;
+		if (false === $this->query($sql))
+			return false;
 		else
 			return $this->affected_rows;
 	}
@@ -197,7 +197,7 @@ class DB_MySQL extends MySQLi
 	 * @param string $table_name The name of the table
 	 * @param string $where The where
 	 * @param int $limit (Optional) The limit
-	 * @return int Returns the number of affected rows, or FALSE on error
+	 * @return int Returns the number of affected rows, or false on error
 	 */
 	public function delete($table_name, $where, $limit = NULL)
 	{
@@ -217,8 +217,8 @@ class DB_MySQL extends MySQLi
 		$this->query($sql);
 
 
-		if (FALSE === $this->query($sql))
-			return FALSE;
+		if (false === $this->query($sql))
+			return false;
 		else
 			return $this->affected_rows;
 	}
@@ -277,11 +277,11 @@ class DB_MySQL extends MySQLi
 	private function __clone() {}
 
 	/**
-	 * Close the connection when instance is destructed
+	 * Close the connection when instance is destroyed.
 	 */
 	public function __destruct()
 	{
-		if (FALSE === $this->connected)
+		if (false === $this->connected)
 			return;
 
 		$this->close();
