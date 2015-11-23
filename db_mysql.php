@@ -22,6 +22,9 @@ class DB_MySQL extends MySQLi
 		// The application does not connect to MySQL unless necessary to make a query.
  		if (count($this->db_config) < 4)
  			$this->error('Invalid number of connection parameters', true);
+
+ 		if (! isset($this->db_config[4]))
+ 			$this->db_config[4] = 3306;
 	}
 
 	private function _connect()
@@ -29,9 +32,9 @@ class DB_MySQL extends MySQLi
 		if (true === $this->connected)
 			return true;
 
-		list($host, $user, $pass, $database) = $this->db_config;
+		list($host, $user, $pass, $database, $port) = $this->db_config;
 
-		@parent::__construct($host, $user, $pass, $database);
+		@parent::__construct($host, $user, $pass, $database, $port);
 
 		if ($this->connect_error)
 		{
