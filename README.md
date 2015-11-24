@@ -39,9 +39,9 @@ Returns a DB_MySQL_Result object.
 ```php
 $query = $db->select('table_name', 'field1, field2');
 
-if (count($query) > 0)
+if ($query)
 {
-    echo 'Num Rows: ', count($query), '<br>';
+    echo 'Num Rows: ', $query->num_rows, '<br>';
 
     foreach ($query as $row) 
     {

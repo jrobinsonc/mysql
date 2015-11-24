@@ -291,15 +291,10 @@ class DB_MySQL extends MySQLi
 	}
 }
 
-class DB_MySQL_Result extends MySQLi_Result implements Countable
+class DB_MySQL_Result extends MySQLi_Result
 {
-	/**
-	 * Countable's implementation. Count rows in result set.
-	 *
-	 * @return int
-	 */
-	public function count()
+	public function __construct(DB_MySQL $db)
 	{
-		return $this->num_rows;
+		parent::__construct($db);
 	}
 }
