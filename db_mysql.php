@@ -7,13 +7,18 @@
  * @link https://github.com/jrobinsonc/DB_MySQL
  * @copyright Copyright (c) 2013
  * @license MIT License
- * @version 0.2
+ * @version 1.0.0
  **/
 class DB_MySQL extends MySQLi
 {
 	private $db_config = array();
+
 	private $connected = false;
+
 	private $last_error = '';
+
+	private $tables = [];
+
 
 	public function __construct() 
 	{
@@ -134,7 +139,7 @@ class DB_MySQL extends MySQLi
 
 			$where_sql = implode(' AND ', $fields);
 
-			$limit = NULL;
+			$limit = null;
 		}
 		else
 		{
@@ -148,7 +153,7 @@ class DB_MySQL extends MySQLi
 			{
 				$where_sql = $where;
 
-				$limit = NULL;
+				$limit = null;
 			}
 		}
 
@@ -165,7 +170,7 @@ class DB_MySQL extends MySQLi
 	 * @param int $limit (Optional) The limit of rows to update
 	 * @return int Returns the number of affected rows, or false on error
 	 */
-	public function update($table_name, $fields, $where, $limit = NULL)
+	public function update($table_name, $fields, $where, $limit = null)
 	{
 		$sql = "UPDATE `{$table_name}` SET ";
 
@@ -174,17 +179,17 @@ class DB_MySQL extends MySQLi
 		foreach ($fields as $field_name => $field_value)
 			$prepared_fields[] = "`$field_name` = " . $this->escape($field_value, true);
 
-		$sql .= implode(',', $fields);
+		$sql .= implode(',', $prepared_fields);
 
 		list($_where, $_limit) = $this->parse_where($where);
 		$where = $_where;
 
 		$sql .= " WHERE {$where}";
 
-		if (NULL === $limit && NULL !== $_limit)
+		if (null === $limit && null !== $_limit)
 			$limit = $_limit;
 
-		if (NULL !== $limit)
+		if (null !== $limit)
 			$sql .= " LIMIT {$limit}";
 
 
@@ -202,7 +207,7 @@ class DB_MySQL extends MySQLi
 	 * @param int $limit (Optional) The limit
 	 * @return int Returns the number of affected rows, or false on error
 	 */
-	public function delete($table_name, $where, $limit = NULL)
+	public function delete($table_name, $where, $limit = null)
 	{
 		$sql = "DELETE FROM `{$table_name}`";
 
@@ -211,13 +216,11 @@ class DB_MySQL extends MySQLi
 
 		$sql .= " WHERE {$where}";
 
-		if (NULL === $limit && NULL !== $_limit)
+		if (null === $limit && null !== $_limit)
 			$limit = $_limit;
 
-		if (NULL !== $limit)
+		if (null !== $limit)
 			$sql .= " LIMIT {$limit}";
-
-		$this->query($sql);
 
 
 		if (false === $this->query($sql))
@@ -236,7 +239,7 @@ class DB_MySQL extends MySQLi
 	 * @param int $limit (Optional) The limit
 	 * @return DB_MySQL_Result
 	 */
-	public function select($table_name, $fields = '*', $where = NULL, $order_by = NULL, $limit = NULL)
+	public function select($table_name, $fields = '*', $where = null, $order_by = null, $limit = null)
 	{
 		if (is_array($fields))
 		{
@@ -255,7 +258,7 @@ class DB_MySQL extends MySQLi
 			list($_where, $_limit) = $this->parse_where($where);
 			$where = $_where;
 
-			if (NULL === $limit && NULL !== $_limit)
+			if (null === $limit && null !== $_limit)
 				$limit = $_limit;
 
 			$sql .= " WHERE {$where}";
@@ -272,6 +275,14 @@ class DB_MySQL extends MySQLi
 		}
 
 		return $this->query($sql);
+	}
+
+	public function table($table_name, $table_args = [])
+	{
+		if (! isset($this->tables[$table_name]))
+			$this->tables[$table_name] = new DB_MySQL_Table($this, $table_name, $table_args);
+
+		return $this->tables[$table_name];
 	}
 
 	/**
@@ -297,4 +308,47 @@ class DB_MySQL_Result extends MySQLi_Result
 	{
 		parent::__construct($db);
 	}
+}
+class DB_MySQL_Table {
+
+	private $table_name = '';
+
+	private $pk_name = 'id';
+
+	private $db = null;
+
+
+	public function __construct(DB_MySQL &$db, $table_name, $table_args = [])
+	{
+		$this->db = $db;
+		$this->table_name = $table_name;
+
+		foreach (['pk_name', 'table_name'] as $value)
+			if (isset($table_args[$value]))
+				$this->$value = $table_args[$value];
+	}
+
+	public function insert($fields)
+	{
+		return $this->db->insert($this->table_name, $fields);
+	}
+
+	public function update($fields, $where, $limit = null)
+	{
+		return $this->db->update($this->table_name, $fields, $where, $limit);
+	}
+
+	public function save($fields)
+	{
+		if (isset($fields[$this->pk_name]))
+			return $this->update($fields, $fields[$this->pk_name], 1);
+		else
+			return $this->insert($fields);
+	}
+
+	public function delete($where, $limit = null)
+	{
+		return $this->db->delete($this->table_name, $where, $limit);
+	}
+
 }

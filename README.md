@@ -3,6 +3,11 @@
 MySQLi Wrapper for PHP.    
 https://github.com/jrobinsonc/DB_MySQL
 
+## Requirements
+
+1. MySQL 5.0.7 or newer.
+2. PHP 5.3.0 or newer.
+
 ## How to use
 
 First, connect to a database:
@@ -47,6 +52,10 @@ if ($query)
     {
         echo $row['first_name'], '<br>';
     }
+}
+else
+{
+    echo $db->error();
 }
 
 // The $where (third param) accepts array, string or integer:
