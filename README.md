@@ -124,3 +124,7 @@ $updated_rows = $db->delete('table_name', 58); // With integer.
 ## License
 
 Licensed under the [MIT licence](https://raw.github.com/jrobinsonc/DB_MySQL/master/LICENSE).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jrobinsonc/db_mysql/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
