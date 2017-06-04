@@ -65,7 +65,7 @@ else
 }
 
 // The $where (third param) accepts array, string or integer:
-$query = $db->select('table_name', 'field1', array('name' => 'Pepe')); // With array.
+$query = $db->select('table_name', 'field1', ['name' => 'Pepe']); // With array.
 $query = $db->select('table_name', 'field1', 'name = "Pepe"'); // With string.
 $query = $db->select('table_name', 'field1', 1); // With integer. In this case, the resulting sql for the "WHERE" is "id = 1".
 ```
@@ -80,10 +80,10 @@ This method accepts:
 Returns the ID of the inserted row, or FALSE on error.
 
 ```php
-$inserted_id = $db->insert('table_name', array(
-    'field1' => "Value 1",
+$inserted_id = $db->insert('table_name', [
+    'field1' => 'Value 1',
     'field2' => 2,
-));
+]);
 ```
 
 ### An UPDATE statement
@@ -100,13 +100,13 @@ Returns the number of affected rows, or FALSE on error.
 ```php
 // NOTE: The $where (third param) like the select method accepts array, string or integer.
 
-$post = array(
+$row = [
     'field1' => 'Value',
-);
+];
 
-$updated_rows = $db->update('table_name', $post, array('id' => 58); // With array.
-$updated_rows = $db->update('table_name', $post, 'id=58'); // With string.
-$updated_rows = $db->update('table_name', $post, 58); // With integer.
+$updated_rows = $db->update('table_name', $row, ['id' => 58]); // With array.
+$updated_rows = $db->update('table_name', $row, 'id=58'); // With string.
+$updated_rows = $db->update('table_name', $row, 58); // With integer.
 ```
 
 ### A DELETE statement
@@ -122,9 +122,9 @@ Returns the number of affected rows, or FALSE on error.
 ```php
 // NOTE: The $where (second param) like the select method accepts array, string or integer.
 
-$updated_rows = $db->delete('table_name', array('id' => 58); // With array.
-$updated_rows = $db->delete('table_name', 'id=58'); // With string.
-$updated_rows = $db->delete('table_name', 58); // With integer.
+$deleted_rows = $db->delete('table_name', ['id' => 58]); // With array.
+$deleted_rows = $db->delete('table_name', 'id=58'); // With string.
+$deleted_rows = $db->delete('table_name', 58); // With integer.
 ```
 
 ## License
