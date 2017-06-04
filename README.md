@@ -1,21 +1,27 @@
 # DB_MySQL
 
 MySQLi Wrapper for PHP.    
-https://github.com/jrobinsonc/DB_MySQL
+https://github.com/jrobinsonc/db-mysql
 
 ## Requirements
 
 1. MySQL 5.0.7 or newer.
 2. PHP 5.3.0 or newer.
 
+## Installation
+
+Install the latest version with:
+
+```
+$ composer require jrdev/db-mysql
+```
+
 ## How to use
 
 First, connect to a database:
 
 ```php
-require 'libs/db_mysql.php';
-
-$db = new DB_MySQL('host', 'user', 'pass', 'database');
+$db = new \jrdev\DB_MySQL('host', 'user', 'pass', 'database');
 ```
 
 Next, prepare your data, and call the necessary methods.
@@ -123,4 +129,4 @@ $updated_rows = $db->delete('table_name', 58); // With integer.
 
 ## License
 
-Licensed under the [MIT licence](https://raw.github.com/jrobinsonc/DB_MySQL/master/LICENSE).
+Licensed under the [MIT licence](https://raw.github.com/jrobinsonc/db-mysql/master/LICENSE).

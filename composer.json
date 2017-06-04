@@ -1,0 +1,27 @@
+{
+  "name": "jrdev/db-mysql",
+  "type": "library",
+  "description": "MySQLi Wrapper for PHP",
+  "keywords": ["mysqli","mysql", "wrapper", "database"],
+  "homepage": "https://github.com/jrobinsonc/db-mysql",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jose Robinson",
+      "email": "hi@joserobinson.com",
+      "homepage": "http://joserobinson.com",
+      "role": "Developer"
+    }
+  ],
+  "require-dev": {
+    "php": ">=5.3"
+  },
+  "support": {
+      "issues" : "https://github.com/jrobinsonc/db-mysql/issues"
+  },
+  "autoload": {
+      "psr-4": {
+          "jrdev\\": "src/"
+      }
+  }
+}
