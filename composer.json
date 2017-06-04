@@ -16,14 +16,28 @@
     "php": ">=5.3"
   },
   "require-dev": {
+    "phpmd/phpmd": "^2.6",
+    "pdepend/pdepend": "^2.5",
+    "squizlabs/php_codesniffer": "^3.0",
+    "codeception/codeception": "^2.3"
+  },
+  "scripts": {
+    "phpmd": "vendor/bin/phpmd tests/unit/,src/ text phpmd.xml",
+    "phpcs": "vendor/bin/phpcs --standard=PSR2 tests/unit/ src/",
+    "codecept": "vendor/bin/codecept run",
+    "test": [
+      "@phpcs",
+      "@phpmd",
+      "@codecept"
+    ]
   },
   "support": {
-      "issues" : "https://github.com/jrobinsonc/mysql/issues",
-      "source": "https://github.com/jrobinsonc/mysql"
+    "issues" : "https://github.com/jrobinsonc/mysql/issues",
+    "source": "https://github.com/jrobinsonc/mysql"
   },
   "autoload": {
-      "psr-4": {
-          "jrdev\\": "src/"
-      }
+    "psr-4": {
+      "jrdev\\": "src/"
+    }
   }
 }

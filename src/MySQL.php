@@ -41,12 +41,14 @@ class MySQL extends \MySQLi
             return true;
         }
 
-        parent::__construct($host ?: $this->dbConfig['host'],
+        parent::__construct(
+            $host ?: $this->dbConfig['host'],
             $username ?: $this->dbConfig['username'],
             $password ?: $this->dbConfig['password'],
             $dbname ?: $this->dbConfig['dbname'],
             $port ?: $this->dbConfig['port'],
-            $socket ?: $this->dbConfig['socket']);
+            $socket ?: $this->dbConfig['socket']
+        );
 
         if ($this->connect_error) {
             $this->error('MySQL Error: ' . $this->connect_errno . ' ' . $this->connect_error, true);
