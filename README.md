@@ -1,7 +1,4 @@
-# DB_MySQL
-
-MySQLi Wrapper for PHP.    
-https://github.com/jrobinsonc/db-mysql
+# MySQLi wrapper for PHP.
 
 ## Requirements
 
@@ -13,7 +10,7 @@ https://github.com/jrobinsonc/db-mysql
 Install the latest version with:
 
 ```
-$ composer require jrdev/db-mysql
+$ composer require jrdev/mysql
 ```
 
 ## How to use
@@ -21,7 +18,7 @@ $ composer require jrdev/db-mysql
 First, connect to a database:
 
 ```php
-$db = new \jrdev\DB_MySQL('host', 'user', 'pass', 'database');
+$db = new \jrdev\MySQL('host', 'user', 'pass', 'database');
 ```
 
 Next, prepare your data, and call the necessary methods.
@@ -29,7 +26,7 @@ Next, prepare your data, and call the necessary methods.
 ### Generic query method
 
 This method accepts only one param, the SQL to execute.   
-And returns a DB_MySQL_Result object.
+And returns a jrdev\MySQL\Result object.
 
 ```php
 $query = $db->query('SELECT ...');
@@ -39,13 +36,13 @@ $query = $db->query('SELECT ...');
 
 This method accepts:
 
-1. `table_name`: The name of the table.
+1. `tableName`: The name of the table.
 2. `fields`: *(Optional)* The fields you want to obtain in the result. Accepts array or string
 3. `where`: *(Optional)* The where. Accepts array, string or intenger
-4. `order_by` *(Optional)* The order by.
+4. `orderBy` *(Optional)* The order by.
 5. `limit` *(Optional)* The limit.
 
-Returns a DB_MySQL_Result object.
+Returns a jrdev\MySQL\Result object.
 
 ```php
 $query = $db->select('table_name', 'field1, field2');
@@ -74,7 +71,7 @@ $query = $db->select('table_name', 'field1', 1); // With integer. In this case, 
 
 This method accepts:
 
-1. `table_name`: The name of the table.
+1. `tableName`: The name of the table.
 2. `fields`: The fields you want to insert.
 
 Returns the ID of the inserted row, or FALSE on error.
@@ -90,7 +87,7 @@ $inserted_id = $db->insert('table_name', [
 
 This method accepts:
 
-1. `table_name`: The name of the table.
+1. `tableName`: The name of the table.
 2. `fields`: The fields to update.
 3. `where`: The where. Accepts array, string or intenger.
 5. `limit` *(Optional)* The limit of rows to update.
@@ -113,7 +110,7 @@ $updated_rows = $db->update('table_name', $row, 58); // With integer.
 
 This method accepts:
 
-1. `table_name`: The name of the table.
+1. `tableName`: The name of the table.
 3. `where`: The where. Accepts array, string or intenger.
 5. `limit` *(Optional)* The limit of rows to delete.
 
@@ -129,4 +126,4 @@ $deleted_rows = $db->delete('table_name', 58); // With integer.
 
 ## License
 
-Licensed under the [MIT licence](https://raw.github.com/jrobinsonc/db-mysql/master/LICENSE).
+Licensed under the [MIT licence](https://raw.github.com/jrobinsonc/mysql/master/LICENSE).

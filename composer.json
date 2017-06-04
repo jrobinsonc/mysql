@@ -1,9 +1,9 @@
 {
-  "name": "jrdev/db-mysql",
+  "name": "jrdev/mysql",
   "type": "library",
   "description": "MySQLi Wrapper for PHP",
   "keywords": ["mysqli","mysql", "wrapper", "database"],
-  "homepage": "https://github.com/jrobinsonc/db-mysql/blob/master/README.md",
+  "homepage": "https://github.com/jrobinsonc/mysql/blob/master/README.md",
   "license": "MIT",
   "authors": [
     {
@@ -18,8 +18,8 @@
   "require-dev": {
   },
   "support": {
-      "issues" : "https://github.com/jrobinsonc/db-mysql/issues",
-      "source": "https://github.com/jrobinsonc/db-mysql"
+      "issues" : "https://github.com/jrobinsonc/mysql/issues",
+      "source": "https://github.com/jrobinsonc/mysql"
   },
   "autoload": {
       "psr-4": {
