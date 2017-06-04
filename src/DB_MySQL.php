@@ -12,7 +12,7 @@ class DB_MySQL extends \MySQLi
     private $tables = [];
 
 
-    public function __construct() 
+    public function __construct()
     {
         $this->db_config = func_get_args();
 
@@ -130,7 +130,7 @@ class DB_MySQL extends \MySQLi
         {
             $fields = array();
 
-            foreach ($where as $field_name => $field_value) 
+            foreach ($where as $field_name => $field_value)
                 $fields[] = "`{$field_name}` = " . $this->escape($field_value, true);
 
             $where_sql = implode(' AND ', $fields);

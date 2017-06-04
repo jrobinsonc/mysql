@@ -1,7 +1,7 @@
 <?php
 namespace jrdev\DB_MySQL;
 
-class Table 
+class Table
 {
     private $table_name = '';
 
