@@ -3,21 +3,23 @@
   "type": "library",
   "description": "MySQLi Wrapper for PHP",
   "keywords": ["mysqli","mysql", "wrapper", "database"],
-  "homepage": "https://github.com/jrobinsonc/db-mysql",
+  "homepage": "https://github.com/jrobinsonc/db-mysql/blob/master/README.md",
   "license": "MIT",
   "authors": [
     {
       "name": "Jose Robinson",
       "email": "hi@joserobinson.com",
-      "homepage": "http://joserobinson.com",
-      "role": "Developer"
+      "homepage": "http://joserobinson.com"
     }
   ],
-  "require-dev": {
+  "require": {
     "php": ">=5.3"
   },
+  "require-dev": {
+  },
   "support": {
-      "issues" : "https://github.com/jrobinsonc/db-mysql/issues"
+      "issues" : "https://github.com/jrobinsonc/db-mysql/issues",
+      "source": "https://github.com/jrobinsonc/db-mysql"
   },
   "autoload": {
       "psr-4": {
