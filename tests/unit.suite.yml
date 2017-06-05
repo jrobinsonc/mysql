@@ -8,7 +8,7 @@ modules:
         - Asserts
         - Db:
             dsn: 'mysql:host=127.0.0.1;'
-            user: 'travis'
+            user: 'root'
             password: ''
             dump: 'tests/_data/dump.sql'
             populate: true
