@@ -15,7 +15,7 @@ class MainTest extends \Codeception\Test\Unit
      */
     protected function _before() // @codingStandardsIgnoreLine
     {
-        $this->MySQL = new \jrdev\MySQL('127.0.0.1', 'travis', '', 'travis_db');
+        $this->MySQL = new \jrdev\MySQL('127.0.0.1', 'root', '', 'travis_db');
     }
 
     /**
@@ -123,7 +123,7 @@ class MainTest extends \Codeception\Test\Unit
 
         $this->assertInternalType('integer', $updated, $this->MySQL->error());
         $this->assertEquals(1, $updated);
-        
+
         // Testing Update method 3
         $updated = $this->MySQL->update('posts', ['title' => 'Post 2 Updated v3'], 2);
 
@@ -144,7 +144,7 @@ class MainTest extends \Codeception\Test\Unit
 
         $this->assertInternalType('integer', $deleted, $this->MySQL->error());
         $this->assertEquals(1, $deleted);
-        
+
         // Testing Delete method 3
         $deleted = $this->MySQL->delete('posts', 3);
 
