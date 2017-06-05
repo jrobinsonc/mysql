@@ -296,13 +296,6 @@ class MySQL extends \MySQLi
     }
 
     /**
-     * Prevent cloning
-     */
-    private function __clone()
-    {
-    }
-
-    /**
      * Close the connection when instance is destroyed.
      */
     public function __destruct()
