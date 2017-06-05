@@ -1,9 +1,11 @@
 # MySQLi wrapper for PHP.
 
+[![Build Status](https://travis-ci.org/jrobinsonc/mysql.svg?branch=master)](https://travis-ci.org/jrobinsonc/mysql)
+
 ## Requirements
 
-1. MySQL 5.0.7 or newer.
-2. PHP 5.3.0 or newer.
+1. MySQL 5.5 or newer.
+2. PHP 5.4 or newer.
 
 ## Installation
 
