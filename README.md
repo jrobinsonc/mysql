@@ -1,6 +1,7 @@
 # MySQLi wrapper for PHP.
 
 [![Build Status](https://travis-ci.org/jrobinsonc/mysql.svg?branch=master)](https://travis-ci.org/jrobinsonc/mysql)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jrobinsonc/mysql/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jrobinsonc/mysql/?branch=master)
 
 ## Requirements
 
