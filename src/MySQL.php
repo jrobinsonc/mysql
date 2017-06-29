@@ -83,12 +83,21 @@ class MySQL extends \MySQLi
      * Performs a generic query
      *
      * @param string $sql
-     * @return MySQL_Result
+     * @return MySQL\Result|false
      */
-    public function query($sql)
+    public function query($sql, $resultMode = MYSQLI_STORE_RESULT)
     {
         if (false === $this->connect()) {
             return false;
+        }
+
+        switch ($resultMode) {
+            case MYSQLI_USE_RESULT:
+                $this->use_result();
+                break;
+            case MYSQLI_STORE_RESULT:
+                $this->store_result();
+                break;
         }
 
         if (false === $this->real_query($sql)) {
