@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jrobinsonc/mysql.svg?branch=master)](https://travis-ci.org/jrobinsonc/mysql)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jrobinsonc/mysql/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jrobinsonc/mysql/?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/595ba3b20fb24f006379c6f2/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/595ba3b20fb24f006379c6f2)
 
 ## Requirements
 
